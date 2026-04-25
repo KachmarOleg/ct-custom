@@ -165,3 +165,282 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 if ( class_exists( 'WooCommerce' ) ) {
 	require get_template_directory() . '/inc/woocommerce.php';
 }
+
+
+
+
+
+/**
+ * Theme Settings Page
+ */
+
+// Register the admin menu page
+function ct_custom_register_settings_page() {
+    add_menu_page(
+        __( 'Theme Settings', 'ct-custom' ),
+        __( 'Theme Settings', 'ct-custom' ),
+        'manage_options',
+        'ct-custom-settings',
+        'ct_custom_render_settings_page',
+        'dashicons-admin-generic',
+        61
+    );
+}
+add_action( 'admin_menu', 'ct_custom_register_settings_page' );
+
+
+// Register settings (Settings API)
+function ct_custom_register_settings() {
+    register_setting(
+        'ct_custom_settings_group',
+        'ct_custom_options',
+        'ct_custom_sanitize_options'
+    );
+}
+add_action( 'admin_init', 'ct_custom_register_settings' );
+
+
+// Sanitize all input before saving
+function ct_custom_sanitize_options( $input ) {
+    $sanitized = [];
+
+    $sanitized['logo_id'] = isset( $input['logo_id'] )
+        ? absint( $input['logo_id'] )
+        : 0;
+
+    $sanitized['phone'] = isset( $input['phone'] )
+        ? sanitize_text_field( $input['phone'] )
+        : '';
+
+    $sanitized['fax'] = isset( $input['fax'] )
+        ? sanitize_text_field( $input['fax'] )
+        : '';
+
+    $sanitized['address'] = isset( $input['address'] )
+        ? sanitize_textarea_field( $input['address'] )
+        : '';
+
+    $socials = [ 'facebook', 'instagram', 'twitter', 'linkedin', 'youtube' ];
+    foreach ( $socials as $social ) {
+        $sanitized[ $social ] = isset( $input[ $social ] )
+            ? esc_url_raw( $input[ $social ] )
+            : '';
+    }
+
+    return $sanitized;
+}
+
+
+// Enqueue WordPress media uploader on settings page only
+function ct_custom_enqueue_admin_scripts( $hook ) {
+    if ( $hook !== 'toplevel_page_ct-custom-settings' ) {
+        return;
+    }
+
+    wp_enqueue_media();
+
+    wp_enqueue_script( 'jquery' );
+
+    wp_register_script( 'ct-custom-admin', false, [ 'jquery', 'media-upload' ], null, true );
+    wp_enqueue_script( 'ct-custom-admin' );
+
+    wp_add_inline_script( 'ct-custom-admin', "
+        jQuery(document).ready(function($) {
+            var mediaUploader;
+
+            $('#ct-custom-upload-logo').on('click', function(e) {
+                e.preventDefault();
+
+                if ( mediaUploader ) {
+                    mediaUploader.open();
+                    return;
+                }
+
+                mediaUploader = wp.media({
+                    title: 'Select Logo Image',
+                    button: { text: 'Use This Image' },
+                    multiple: false,
+                    library: { type: 'image' }
+                });
+
+                mediaUploader.on('select', function() {
+                    var attachment = mediaUploader.state().get('selection').first().toJSON();
+                    $('#ct_custom_logo_id').val(attachment.id);
+                    $('#ct-custom-logo-preview').attr('src', attachment.url).show();
+                    $('#ct-custom-remove-logo').show();
+                });
+
+                mediaUploader.open();
+            });
+
+            $('#ct-custom-remove-logo').on('click', function(e) {
+                e.preventDefault();
+                $('#ct_custom_logo_id').val('');
+                $('#ct-custom-logo-preview').hide().attr('src', '');
+                $(this).hide();
+            });
+        });
+    " );
+}
+add_action( 'admin_enqueue_scripts', 'ct_custom_enqueue_admin_scripts' );
+
+
+// Render the settings page HTML
+function ct_custom_render_settings_page() {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        return;
+    }
+
+    $options  = get_option( 'ct_custom_options', [] );
+    $logo_id  = ! empty( $options['logo_id'] ) ? $options['logo_id'] : 0;
+    $logo_url = $logo_id ? wp_get_attachment_image_url( $logo_id, 'medium' ) : '';
+    ?>
+
+    <div class="wrap">
+        <h1><?php esc_html_e( 'Theme Settings', 'ct-custom' ); ?></h1>
+
+        <?php settings_errors( 'ct_custom_options' ); ?>
+
+        <form method="post" action="options.php">
+            <?php
+            settings_fields( 'ct_custom_settings_group' );
+            ?>
+
+            <h2><?php esc_html_e( 'Logo', 'ct-custom' ); ?></h2>
+            <table class="form-table" role="presentation">
+                <tr>
+                    <th scope="row">
+                        <label><?php esc_html_e( 'Site Logo', 'ct-custom' ); ?></label>
+                    </th>
+                    <td>
+                        <input type="hidden"
+                               id="ct_custom_logo_id"
+                               name="ct_custom_options[logo_id]"
+                               value="<?php echo esc_attr( $logo_id ); ?>">
+
+                        <img id="ct-custom-logo-preview"
+                             src="<?php echo esc_url( $logo_url ); ?>"
+                             style="max-width:200px; display:<?php echo $logo_url ? 'block' : 'none'; ?>; margin-bottom:8px;">
+
+                        <button type="button" id="ct-custom-upload-logo" class="button">
+                            <?php esc_html_e( 'Upload / Change Logo', 'ct-custom' ); ?>
+                        </button>
+
+                        <button type="button"
+                                id="ct-custom-remove-logo"
+                                class="button"
+                                style="display:<?php echo $logo_url ? 'inline-block' : 'none'; ?>; margin-left:8px; color:#b32d2e;">
+                            <?php esc_html_e( 'Remove Logo', 'ct-custom' ); ?>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+
+            <h2><?php esc_html_e( 'Contact Information', 'ct-custom' ); ?></h2>
+            <table class="form-table" role="presentation">
+                <tr>
+                    <th scope="row">
+                        <label for="ct_custom_phone">
+                            <?php esc_html_e( 'Phone Number', 'ct-custom' ); ?>
+                        </label>
+                    </th>
+                    <td>
+                        <input type="tel"
+                               id="ct_custom_phone"
+                               name="ct_custom_options[phone]"
+                               value="<?php echo esc_attr( $options['phone'] ?? '' ); ?>"
+                               class="regular-text"
+                               placeholder="+48 123 456 789">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row">
+                        <label for="ct_custom_fax">
+                            <?php esc_html_e( 'Fax Number', 'ct-custom' ); ?>
+                        </label>
+                    </th>
+                    <td>
+                        <input type="tel"
+                               id="ct_custom_fax"
+                               name="ct_custom_options[fax]"
+                               value="<?php echo esc_attr( $options['fax'] ?? '' ); ?>"
+                               class="regular-text"
+                               placeholder="+48 123 456 789">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row">
+                        <label for="ct_custom_address">
+                            <?php esc_html_e( 'Address', 'ct-custom' ); ?>
+                        </label>
+                    </th>
+                    <td>
+                        <textarea id="ct_custom_address"
+                                  name="ct_custom_options[address]"
+                                  rows="4"
+                                  class="large-text"
+                                  placeholder="вул. Хрещатик 1&#10;Київ, 01001&#10;Україна"><?php echo esc_textarea( $options['address'] ?? '' ); ?></textarea>
+                        <p class="description">
+                            <?php esc_html_e( 'You can use line breaks for multi-line addresses.', 'ct-custom' ); ?>
+                        </p>
+                    </td>
+                </tr>
+
+            </table>
+
+            <h2><?php esc_html_e( 'Social Media Links', 'ct-custom' ); ?></h2>
+            <table class="form-table" role="presentation">
+
+                <?php
+                $social_fields = [
+                    'facebook'  => [ 'label' => 'Facebook',  'placeholder' => 'https://facebook.com/yourpage' ],
+                    'instagram' => [ 'label' => 'Instagram',  'placeholder' => 'https://instagram.com/yourhandle' ],
+                    'twitter'   => [ 'label' => 'X (Twitter)', 'placeholder' => 'https://x.com/yourhandle' ],
+                    'linkedin'  => [ 'label' => 'LinkedIn',   'placeholder' => 'https://linkedin.com/company/yourcompany' ],
+                    'youtube'   => [ 'label' => 'YouTube',    'placeholder' => 'https://youtube.com/@yourchannel' ],
+                ];
+
+                foreach ( $social_fields as $key => $field ) : ?>
+                    <tr>
+                        <th scope="row">
+                            <label for="ct_custom_<?php echo esc_attr( $key ); ?>">
+                                <?php echo esc_html( $field['label'] ); ?>
+                            </label>
+                        </th>
+                        <td>
+                            <input type="url"
+                                   id="ct_custom_<?php echo esc_attr( $key ); ?>"
+                                   name="ct_custom_options[<?php echo esc_attr( $key ); ?>]"
+                                   value="<?php echo esc_url( $options[ $key ] ?? '' ); ?>"
+                                   class="regular-text"
+                                   placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>">
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+
+            </table>
+
+            <?php submit_button( __( 'Save Settings', 'ct-custom' ) ); ?>
+        </form>
+    </div>
+    <?php
+}
+
+
+// Get option value by key
+function ct_custom_get_option( $key, $default = '' ) {
+    $options = get_option( 'ct_custom_options', [] );
+    return isset( $options[ $key ] ) ? $options[ $key ] : $default;
+}
+
+// Get company logo
+function ct_custom_the_logo( $size = 'full', $attrs = [] ) {
+    $logo_id = ct_custom_get_option( 'logo_id' );
+    if ( ! $logo_id ) {
+        return;
+    }
+    $default_attrs = [ 'class' => 'site-logo', 'alt' => get_bloginfo( 'name' ) ];
+    echo wp_get_attachment_image( $logo_id, $size, false, array_merge( $default_attrs, $attrs ) );
+}
