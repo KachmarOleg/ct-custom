@@ -20,6 +20,7 @@ body:not(.wp-core-ui) {
         color: #ff6200;
         font-weight: 400;
         font-family: "Open Sans";
+        text-transform: uppercase;
     }
 
     p {
@@ -230,7 +231,6 @@ body:not(.wp-core-ui) {
 
 .the-content {
     margin-top: 32px;
-
 }
 
 .flex-start {
@@ -249,6 +249,94 @@ body:not(.wp-core-ui) {
     display: flex;
     justify-content: space-between;
     align-content: center;
+
+    input, textarea {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+.the-content {
+    input[type="text"], input[type="tel"], input[type="email"], textarea {
+        margin-bottom: 10px;
+        width: 100%;
+        padding: 10px;
+        border-radius: 0;
+        border: 1px solid #ededed;
+        background: #f6f6f6;
+        color: #878787;
+    }
+
+    textarea {
+        height: 110px;
+    }
+
+    input[type="submit"] {
+        margin-top: 17px;
+        padding: 13px 25px;
+        background: #ff6200;
+        border: 1px solid transparent;
+        border-radius: 0;
+        font-family: "Open Sans";
+        font-size: 13px;
+        font-weight: 700;
+        color: #ffffff;
+        text-transform: uppercase;
+        cursor: pointer;
+        &:hover {
+            border: 1px solid #ff6200;
+            background: #ffffff;
+            color: #ff6200;
+        }
+    }
+
+    .site-contact-info p, address {
+        font-size: 16px;
+        font-style: normal;
+        color: #595959;
+        font-family: "Myriad Pro", sans-serif;
+        line-height: normal;
+    }
+
+    br {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .contact-phone,
+    .contact-fax {
+        a {
+            color: #595959;
+            text-decoration: none;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .social-links {
+        margin-top: 58px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: #acacac;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            font-family: "Myriad Pro", sans-serif;
+
+            &:hover {
+                background: #363636;
+            }
+        }
+    }
 }
 
 .gap10 {
