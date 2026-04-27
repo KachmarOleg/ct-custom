@@ -459,3 +459,10 @@ add_action( 'wp_enqueue_scripts', 'ct_custom_enqueue_fonts' );
 
 
 wp_enqueue_style( 'ct-custom-styles', get_stylesheet_directory_uri() . '/css/custom.css', [], '1.0' );
+
+
+function ct_custom_nav_link_atts( $atts, $item, $args ) {
+    $atts['data-text'] = $item->title;
+    return $atts;
+}
+add_filter( 'nav_menu_link_attributes', 'ct_custom_nav_link_atts', 10, 3 );

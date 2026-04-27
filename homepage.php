@@ -5,19 +5,7 @@ Template Name: Home page
 get_header();
 ?>
 
-<div class="site-branding">
-    <?php if ( ct_custom_get_option( 'logo_id' ) ) : ?>
-        <a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
-            <?php ct_custom_the_logo( 'full', [ 'class' => 'site-logo' ] ); ?>
-        </a>
-    <?php else : ?>
-        <p class="site-title">
-            <a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
-                <?php bloginfo( 'name' ); ?>
-            </a>
-        </p>
-    <?php endif; ?>
-</div>
+
 
 <h1>Contact</h1>
 <h2>Contact</h2>

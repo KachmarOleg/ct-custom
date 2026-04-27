@@ -24,66 +24,64 @@
 <div id="page" class="site">
 	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'ct-custom' ); ?></a>
 
-	<header id="masthead" class="site-header">
-        <div class="top-bar">
-            <div class="container flex-between">
-                <div class="flex-start gap10">
-                    <div class="dark-orange-text">
-                        <p>
-                            <?php esc_html_e( 'CALL US NOW!', 'ct-custom' ); ?>
-                        </p>
-                    </div>
-
-                    <?php
-                    $phone = ct_custom_get_option( 'phone' );
-                    if ( $phone ) : ?>
-                        <p class="contact-phone">
-                            <a href="tel:<?php echo esc_attr( preg_replace( '/\s+/', '', $phone ) ); ?>" class="white-text">
-                                <?php echo esc_html( $phone ); ?>
-                            </a>
-                        </p>
-                    <?php endif; ?>
+    <div class="top-bar">
+        <div class="container flex-between">
+            <div class="flex-start gap10">
+                <div class="dark-orange-text">
+                    <p>
+                        <?php esc_html_e( 'CALL US NOW!', 'ct-custom' ); ?>
+                    </p>
                 </div>
 
-                <div class="flex-start gap10">
-                    <a href="#" class="dark-orange-text">
-                        <?php esc_html_e( 'Login', 'ct-custom' ); ?>
-                    </a>
-                    <a href="#" class="white-text">
-                        <?php esc_html_e( 'Sign up', 'ct-custom' ); ?>
-                    </a>
-                </div>
+                <?php
+                $phone = ct_custom_get_option( 'phone' );
+                if ( $phone ) : ?>
+                    <p class="contact-phone">
+                        <a href="tel:<?php echo esc_attr( preg_replace( '/\s+/', '', $phone ) ); ?>" class="white-text">
+                            <?php echo esc_html( $phone ); ?>
+                        </a>
+                    </p>
+                <?php endif; ?>
+            </div>
+
+            <div class="flex-start gap10">
+                <a href="#" class="dark-orange-text">
+                    <?php esc_html_e( 'Login', 'ct-custom' ); ?>
+                </a>
+                <a href="#" class="white-text">
+                    <?php esc_html_e( 'Sign up', 'ct-custom' ); ?>
+                </a>
             </div>
         </div>
+    </div>
+	<header id="masthead" class="site-header">
+        <div class="header-container container flex-between">
+            <div class="site-branding">
+                <?php if ( ct_custom_get_option( 'logo_id' ) ) : ?>
+                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
+                        <?php ct_custom_the_logo( 'full', [ 'class' => 'site-logo' ] ); ?>
+                    </a>
+                <?php else : ?>
+                    <p class="site-title">
+                        <a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
+                            <?php bloginfo( 'name' ); ?>
+                        </a>
+                    </p>
+                <?php endif; ?>
+            </div><!-- .site-branding -->
 
-		<div class="site-branding">
-			<?php
-			the_custom_logo();
-			if ( is_front_page() && is_home() ) :
-				?>
-				<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
-				<?php
-			else :
-				?>
-				<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
-				<?php
-			endif;
-			$ct_custom_description = get_bloginfo( 'description', 'display' );
-			if ( $ct_custom_description || is_customize_preview() ) :
-				?>
-				<p class="site-description"><?php echo $ct_custom_description; /* WPCS: xss ok. */ ?></p>
-			<?php endif; ?>
-		</div><!-- .site-branding -->
-
-		<nav id="site-navigation" class="main-navigation">
-			<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'ct-custom' ); ?></button>
-			<?php
-			wp_nav_menu( array(
-				'theme_location' => 'menu-1',
-				'menu_id'        => 'primary-menu',
-			) );
-			?>
-		</nav><!-- #site-navigation -->
+            <nav id="site-navigation" class="main-navigation flex-center">
+                <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'ct-custom' ); ?></button>
+                <?php
+                wp_nav_menu( array(
+                        'theme_location' => 'menu-1',
+                        'container'      => false,
+                        'items_wrap'     => '<ul class="flex-start">%3$s</ul>',
+                        'menu_id'        => 'primary-menu',
+                ) );
+                ?>
+            </nav><!-- #site-navigation -->
+        </div>
 	</header><!-- #masthead -->
 
 	<div id="content" class="site-content">
