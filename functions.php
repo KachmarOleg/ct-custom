@@ -170,11 +170,26 @@ if ( class_exists( 'WooCommerce' ) ) {
 
 
 
-/**
- * Theme Settings Page
- */
+/////////////////////////
+// Coalition Skills Test
+/////////////////////////
 
-// Register the admin menu page
+// Fonts
+function ct_custom_enqueue_fonts() {
+    wp_enqueue_style(
+            'ct-custom-google-fonts',
+            'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Ubuntu:wght@300&family=Bebas+Neue&display=swap',
+            [],
+            null
+    );
+}
+add_action( 'wp_enqueue_scripts', 'ct_custom_enqueue_fonts' );
+
+// Custom styles
+wp_enqueue_style( 'ct-custom-styles', get_stylesheet_directory_uri() . '/layouts/custom.css', [], '1.0' );
+
+
+// Theme Settings Page
 function ct_custom_register_settings_page() {
     add_menu_page(
         __( 'Theme Settings', 'ct-custom' ),
@@ -189,7 +204,7 @@ function ct_custom_register_settings_page() {
 add_action( 'admin_menu', 'ct_custom_register_settings_page' );
 
 
-// Register settings (Settings API)
+// Register Settings API
 function ct_custom_register_settings() {
     register_setting(
         'ct_custom_settings_group',
@@ -426,7 +441,6 @@ function ct_custom_render_settings_page() {
     <?php
 }
 
-
 // Get option value by key
 function ct_custom_get_option( $key, $default = '' ) {
     $options = get_option( 'ct_custom_options', [] );
@@ -443,22 +457,7 @@ function ct_custom_the_logo( $size = 'full', $attrs = [] ) {
     echo wp_get_attachment_image( $logo_id, $size, false, array_merge( $default_attrs, $attrs ) );
 }
 
-// Fonts
-function ct_custom_enqueue_fonts() {
-    wp_enqueue_style(
-            'ct-custom-google-fonts',
-            'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Ubuntu:wght@300&family=Bebas+Neue&display=swap',
-            [],
-            null
-    );
-}
-add_action( 'wp_enqueue_scripts', 'ct_custom_enqueue_fonts' );
-
-
-
-wp_enqueue_style( 'ct-custom-styles', get_stylesheet_directory_uri() . '/css/custom.css', [], '1.0' );
-
-
+// Add data attribute for main menu items
 function ct_custom_nav_link_atts( $atts, $item, $args ) {
     $atts['data-text'] = $item->title;
     return $atts;
@@ -466,7 +465,7 @@ function ct_custom_nav_link_atts( $atts, $item, $args ) {
 add_filter( 'nav_menu_link_attributes', 'ct_custom_nav_link_atts', 10, 3 );
 
 
-
+// Shortcode for Reach us content
 function ct_custom_reach_us_shortcode() {
     $phone   = ct_custom_get_option( 'phone' );
     $fax     = ct_custom_get_option( 'fax' );
