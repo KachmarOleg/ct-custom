@@ -13,6 +13,8 @@ body:not(.wp-core-ui) {
     }
 
     h2 {
+        padding-bottom: 13px;
+        border-bottom: 6px solid #525252;
         font-size: 23px;
         line-height: 25px;
         color: #ff6200;
@@ -187,13 +189,48 @@ body:not(.wp-core-ui) {
     }
 }
 
+.wp-block-columns {
+    margin-top: 30px;
+    gap: 77px;
+}
+
 .breadcrumbs {
-    opacity: 0.780;
-    font-size: 14px;
-    line-height: 25px;
-    color: #929292;
-    font-weight: 400;
-    font-family: "Ubuntu";
+    margin-bottom: 21px;
+
+    a {
+        opacity: 0.780;
+        font-size: 14px;
+        line-height: 25px;
+        color: #929292;
+        font-weight: 400;
+        font-family: "Ubuntu";
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+            color: #929292;
+        }
+    }
+
+    span {
+        font-size: 14px;
+        line-height: 25px;
+        color: #929292;
+        font-family: "Ubuntu";
+    }
+
+    strong {
+        opacity: 1;
+        font-size: 14px;
+        line-height: 25px;
+        color: #929292;
+        font-weight: 700;
+        font-family: "Ubuntu";
+    }
+}
+
+.the-content {
+    margin-top: 32px;
+
 }
 
 .flex-start {
