@@ -57,11 +57,10 @@ $address = ct_custom_get_option( 'address' );
 
 <?php
 $socials = [
-    'facebook'  => [ 'label' => 'Facebook',   'icon' => 'dashicons-facebook' ],
-    'instagram' => [ 'label' => 'Instagram',   'icon' => 'dashicons-instagram' ],
+    'facebook'  => [ 'label' => 'Facebook', 'icon' => 'dashicons-facebook' ],
     'twitter'   => [ 'label' => 'X (Twitter)', 'icon' => 'dashicons-twitter' ],
-    'linkedin'  => [ 'label' => 'LinkedIn',    'icon' => 'dashicons-linkedin' ],
-    'youtube'   => [ 'label' => 'YouTube',     'icon' => 'dashicons-youtube' ],
+    'linkedin'  => [ 'label' => 'LinkedIn', 'icon' => 'dashicons-linkedin' ],
+    'pinterest' => [ 'label' => 'Pinterest', 'icon' => 'dashicons-pinterest' ],
 ];
 ?>
 

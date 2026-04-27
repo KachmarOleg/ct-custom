@@ -220,7 +220,7 @@ function ct_custom_sanitize_options( $input ) {
         ? sanitize_textarea_field( $input['address'] )
         : '';
 
-    $socials = [ 'facebook', 'instagram', 'twitter', 'linkedin', 'youtube' ];
+    $socials = ['facebook', 'twitter', 'linkedin', 'pinterest'];
     foreach ( $socials as $social ) {
         $sanitized[ $social ] = isset( $input[ $social ] )
             ? esc_url_raw( $input[ $social ] )
@@ -394,12 +394,12 @@ function ct_custom_render_settings_page() {
             <table class="form-table" role="presentation">
 
                 <?php
+
                 $social_fields = [
-                    'facebook'  => [ 'label' => 'Facebook',  'placeholder' => 'https://facebook.com/yourpage' ],
-                    'instagram' => [ 'label' => 'Instagram',  'placeholder' => 'https://instagram.com/yourhandle' ],
+                    'facebook'  => [ 'label' => 'Facebook', 'placeholder' => 'https://facebook.com/yourpage' ],
                     'twitter'   => [ 'label' => 'X (Twitter)', 'placeholder' => 'https://x.com/yourhandle' ],
-                    'linkedin'  => [ 'label' => 'LinkedIn',   'placeholder' => 'https://linkedin.com/company/yourcompany' ],
-                    'youtube'   => [ 'label' => 'YouTube',    'placeholder' => 'https://youtube.com/@yourchannel' ],
+                    'linkedin'  => [ 'label' => 'LinkedIn', 'placeholder' => 'https://linkedin.com/yourcompany' ],
+                    'pinterest' => [ 'label' => 'Pinterest', 'placeholder' => 'https://www.pinterest.com/yourpage/' ],
                 ];
 
                 foreach ( $social_fields as $key => $field ) : ?>
@@ -455,3 +455,7 @@ function ct_custom_enqueue_fonts() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'ct_custom_enqueue_fonts' );
+
+
+
+wp_enqueue_style( 'ct-custom-styles', get_stylesheet_directory_uri() . '/css/custom.css', [], '1.0' );

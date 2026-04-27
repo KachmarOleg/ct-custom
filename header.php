@@ -25,6 +25,37 @@
 	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'ct-custom' ); ?></a>
 
 	<header id="masthead" class="site-header">
+        <div class="top-bar">
+            <div class="container flex-between">
+                <div class="flex-start gap10">
+                    <div class="dark-orange-text">
+                        <p>
+                            <?php esc_html_e( 'CALL US NOW!', 'ct-custom' ); ?>
+                        </p>
+                    </div>
+
+                    <?php
+                    $phone = ct_custom_get_option( 'phone' );
+                    if ( $phone ) : ?>
+                        <p class="contact-phone">
+                            <a href="tel:<?php echo esc_attr( preg_replace( '/\s+/', '', $phone ) ); ?>" class="white-text">
+                                <?php echo esc_html( $phone ); ?>
+                            </a>
+                        </p>
+                    <?php endif; ?>
+                </div>
+
+                <div class="flex-start gap10">
+                    <a href="#" class="dark-orange-text">
+                        <?php esc_html_e( 'Login', 'ct-custom' ); ?>
+                    </a>
+                    <a href="#" class="white-text">
+                        <?php esc_html_e( 'Sign up', 'ct-custom' ); ?>
+                    </a>
+                </div>
+            </div>
+        </div>
+
 		<div class="site-branding">
 			<?php
 			the_custom_logo();
