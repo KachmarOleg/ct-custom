@@ -983,3 +983,80 @@ object {
 .gallery-caption {
 	display: block;
 }
+
+
+
+
+
+
+
+
+
+
+
+h1 {
+	font-size: 27px;
+	line-height: 19px;
+	color: #ff6200;
+	font-weight: 700;
+	font-family: "Open Sans";
+}
+
+h2 {
+	font-size: 23px;
+	line-height: 25px;
+	color: #ff6200;
+	font-weight: 400;
+	font-family: "Open Sans";
+}
+
+p {
+	font-size: 14px;
+	line-height: 19px;
+	color: #878787;
+	font-weight: 300;
+	font-family: "Ubuntu";
+}
+
+.container {
+	width: 960px;
+}
+
+.top-bar {
+	background: #ff6200;
+	padding: 10px 0;
+}
+
+.top-bar a {
+	font-size: 15px;
+	line-height: 18px;
+	text-transform: uppercase;
+	font-family: "Bebas";
+}
+
+.top-bar .login-link {
+	color: #be3600;
+}
+
+.top-bar .signup-link {
+	color: #ffffff;
+}
+
+.breadcrumbs {
+	opacity: 0.780;
+	font-size: 14px;
+	line-height: 25px;
+	color: #929292;
+	font-weight: 400;
+	font-family: "Ubuntu";
+}
+
+nav {
+	li {
+		font-size: 13px;
+		text-transform: uppercase;
+		color: #333333;
+		font-family: "Myriad Pro", sans-serif; /* Myriad Pro is a licensed Adobe font and not available via Google Fonts. */
+		text-align: right;
+	}
+}

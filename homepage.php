@@ -19,6 +19,10 @@ get_header();
     <?php endif; ?>
 </div>
 
+<h1>Contact</h1>
+<h2>Contact</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam posuere ipsum nec velit mattis elementum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas eu placerat metus, eget placerat libero. </p>
+
 <?php
 $phone   = ct_custom_get_option( 'phone' );
 $fax     = ct_custom_get_option( 'fax' );

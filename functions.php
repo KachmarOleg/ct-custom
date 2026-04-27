@@ -444,3 +444,14 @@ function ct_custom_the_logo( $size = 'full', $attrs = [] ) {
     $default_attrs = [ 'class' => 'site-logo', 'alt' => get_bloginfo( 'name' ) ];
     echo wp_get_attachment_image( $logo_id, $size, false, array_merge( $default_attrs, $attrs ) );
 }
+
+// Fonts
+function ct_custom_enqueue_fonts() {
+    wp_enqueue_style(
+            'ct-custom-google-fonts',
+            'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Ubuntu:wght@300&family=Bebas+Neue&display=swap',
+            [],
+            null
+    );
+}
+add_action( 'wp_enqueue_scripts', 'ct_custom_enqueue_fonts' );
